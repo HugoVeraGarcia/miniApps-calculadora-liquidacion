@@ -1,0 +1,16 @@
+{
+  "name": "Calculadora de liquidación — microtools",
+  "short_name": "Liquidación",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#FFFFFF",
+  "theme_color": "#C2410C",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

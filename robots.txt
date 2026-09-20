@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://liquidacion.microtools.lat/sitemap.xml

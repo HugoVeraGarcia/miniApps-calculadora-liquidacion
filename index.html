@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="es-PE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calculadora de liquidación laboral en Perú: CTS y más</title>
+<meta name="description" content="Calcula gratis tu liquidación en Perú: CTS trunca, gratificación trunca, vacaciones e indemnización por despido. Con el desglose de cada concepto y su norma.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="canonical" href="https://liquidacion.microtools.lat/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Calculadora de liquidación laboral en Perú: CTS y más">
+<meta property="og:description" content="Calcula gratis tu liquidación en Perú: CTS trunca, gratificación trunca, vacaciones e indemnización por despido. Con el desglose de cada concepto y su norma.">
+<meta property="og:locale" content="es_PE">
+<meta property="og:site_name" content="microtools">
+<meta property="og:url" content="https://liquidacion.microtools.lat/">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+<link rel="stylesheet" href="/css/app.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calculadora de liquidación laboral en Perú: CTS y más","applicationCategory":"FinanceApplication","operatingSystem":"Cualquiera con navegador web","description":"Calcula gratis tu liquidación en Perú: CTS trunca, gratificación trunca, vacaciones e indemnización por despido. Con el desglose de cada concepto y su norma.","inLanguage":"es","offers":{"@type":"Offer","price":"0","priceCurrency":"PEN"},"url":"https://liquidacion.microtools.lat/"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿El resultado es exacto?","acceptedAnswer":{"@type":"Answer","text":"Es una estimación fiel a las fórmulas y a los valores vigentes, y con el desglose a la vista. Pero depende de los datos que introduzcas, y hay situaciones que la herramienta no modela: récords vacacionales incompletos, personal de dirección, convenios colectivos con condiciones propias. Úsala para entender y para comparar, no como documento definitivo."}},{"@type":"Question","name":"¿Esto reemplaza a un abogado?","acceptedAnswer":{"@type":"Answer","text":"No. Es información y un cálculo referencial, no asesoría legal. Sirve para llegar a la conversación sabiendo de qué se habla y con las cifras en la mano. Si hay un despido de por medio o el monto es importante, consulta con un abogado laboralista."}},{"@type":"Question","name":"¿Guardan mis datos de sueldo?","acceptedAnswer":{"@type":"Answer","text":"No llegan a ningún servidor: el cálculo ocurre íntegramente en tu navegador. No hay base de datos, no hay cuenta y no hay registro de lo que escribiste."}},{"@type":"Question","name":"¿Sirve si renuncié en vez de que me despidieran?","acceptedAnswer":{"@type":"Answer","text":"Sí. La CTS trunca, la gratificación trunca y las vacaciones se calculan igual en los dos casos. Lo único que cambia es la indemnización, que solo aparece si hubo despido arbitrario después del período de prueba."}},{"@type":"Question","name":"¿Qué es la «triple vacacional» y por qué a veces no aparece?","acceptedAnswer":{"@type":"Answer","text":"Es la remuneración adicional que corresponde cuando pasaron más de doce meses desde que ganaste el derecho a vacaciones sin llegar a descansarlas. Si tomaste tus vacaciones, o si el año todavía no venció, no aplica."}},{"@type":"Question","name":"¿Puedo descargar el resultado?","acceptedAnswer":{"@type":"Answer","text":"Sí, en PDF, con el desglose y la memoria de cálculo completos. El PDF se genera en tu propio navegador, igual que el cálculo."}}]}</script>
+</head>
+<body>
+<a class="salto-contenido" href="#contenido">Ir al contenido</a>
+<header class="cabecera"><div class="contenedor cabecera__fila">
+  <a class="logo" href="/"><span data-marca>microtools</span><span class="logo__sep" aria-hidden="true">/</span><span class="logo__app">Liquidaci&oacute;n</span></a>
+  <nav class="nav" aria-label="Principal">
+    <a href="/" aria-current="page">Calculadora</a>
+    <a href="https://microtools.lat/" rel="noopener">Más herramientas</a>
+  </nav>
+</div></header>
+<main id="contenido">
+<div class="contenedor">
+
+  <div class="entrada">
+    <h1>Calculadora de liquidación laboral en Perú</h1>
+    <p>Pon tus fechas y tu sueldo y obtén el cálculo de tu liquidación concepto por concepto: CTS trunca, gratificación trunca, vacaciones truncas y no gozadas, e indemnización por despido arbitrario si corresponde.</p>
+    <p>No da solo el total. Da el desglose y la memoria de cálculo, paso a paso, para que puedas comparar con la hoja que te entregó la empresa y ver exactamente en qué línea difieren.</p>
+  </div>
+
+  <p class="privacidad-nota"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="7" width="10" height="6.6" rx="1.4"/><path d="M5.5 7V5.2a2.5 2.5 0 0 1 5 0V7"/></svg><span>Todo el c&aacute;lculo ocurre en tu navegador: tus fechas y tu sueldo no salen de tu dispositivo.</span></p>
+
+  <div class="ad-slot ad-slot--top" data-slot="top"></div>
+
+  <form id="form-liquidacion" class="card" novalidate>
+
+    <fieldset>
+      <legend>Tus datos</legend>
+
+      <div class="field-row">
+        <label for="fechaIngreso">Fecha de ingreso a la empresa</label>
+        <input type="date" id="fechaIngreso" name="fechaIngreso" required>
+      </div>
+
+      <div class="field-row">
+        <label for="fechaCese">Fecha de salida / cese</label>
+        <input type="date" id="fechaCese" name="fechaCese" required>
+      </div>
+
+      <div class="field-row">
+        <label for="sueldoBasico">Remuneración mensual bruta (sueldo básico)</label>
+        <div class="input-prefix">
+          <span>S/</span>
+          <input type="number" id="sueldoBasico" name="sueldoBasico" min="0" step="0.01" required inputmode="decimal">
+        </div>
+      </div>
+
+      <div class="field-row field-toggle">
+        <label for="recibeAsignacionFamiliar">¿Recibe asignación familiar? (S/ 113 — tienes hijos menores de 18, o hasta 24 si estudian)</label>
+        <input type="checkbox" id="recibeAsignacionFamiliar" name="recibeAsignacionFamiliar">
+      </div>
+
+      <div class="field-row field-toggle">
+        <label for="tieneVariable">¿Tienes comisiones o remuneración variable?</label>
+        <input type="checkbox" id="tieneVariable" name="tieneVariable">
+      </div>
+
+      <div class="field-row" id="row-variable" hidden>
+        <label for="variablePromedio">Promedio de comisiones/variable de los últimos 6 meses</label>
+        <div class="input-prefix">
+          <span>S/</span>
+          <input type="number" id="variablePromedio" name="variablePromedio" min="0" step="0.01" inputmode="decimal">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <label for="regimenSalud">Sistema de salud al que estás afiliado</label>
+        <select id="regimenSalud" name="regimenSalud">
+          <option value="EsSalud" selected>EsSalud</option>
+          <option value="EPS">EPS</option>
+        </select>
+        <p class="hint">Define si el bono extra de tu gratificación es 9% o 6.75%.</p>
+      </div>
+
+    </fieldset>
+
+    <fieldset>
+      <legend>Tu cese</legend>
+
+      <div class="field-row">
+        <label for="motivoCese">Motivo de cese</label>
+        <select id="motivoCese" name="motivoCese">
+          <option value="renuncia_voluntaria" selected>Renuncia voluntaria</option>
+          <option value="despido_arbitrario">Despido arbitrario</option>
+          <option value="mutuo_disenso">Mutuo disenso</option>
+          <option value="fin_contrato_plazo_fijo">Fin de contrato a plazo fijo</option>
+          <option value="despido_justificado">Despido justificado</option>
+        </select>
+      </div>
+
+      <div class="field-row">
+        <label for="tipoContrato">Tipo de contrato</label>
+        <select id="tipoContrato" name="tipoContrato">
+          <option value="indeterminado" selected>Indeterminado</option>
+          <option value="plazo_fijo">Plazo fijo</option>
+        </select>
+      </div>
+
+      <div class="field-row" id="row-fin-contrato" hidden>
+        <label for="fechaFinContrato">Fecha de fin de contrato (según lo pactado)</label>
+        <input type="date" id="fechaFinContrato" name="fechaFinContrato">
+      </div>
+
+      <div class="field-row" id="row-periodo-prueba" hidden>
+        <label for="periodoPruebaDistinto">¿Tu contrato establece un período de prueba distinto a los 3 meses estándar? (ej. personal de confianza: 6 meses, dirección: 12 meses)</label>
+        <select id="periodoPruebaDistinto" name="periodoPruebaDistinto">
+          <option value="no" selected>No, es el estándar de 3 meses</option>
+          <option value="si">Sí, es distinto</option>
+        </select>
+      </div>
+
+      <div class="field-row" id="row-periodo-prueba-meses" hidden>
+        <label for="periodoPruebaMeses">Duración del período de prueba pactado (en meses)</label>
+        <input type="number" id="periodoPruebaMeses" name="periodoPruebaMeses" min="1" max="12" step="1" value="6">
+      </div>
+
+    </fieldset>
+
+    <fieldset id="fieldset-vacaciones" hidden>
+      <legend>Vacaciones</legend>
+      <div class="field-row">
+        <label for="diasPendientesNoGozados">Días de vacaciones ganados y no gozados (de años ya completos)</label>
+        <input type="number" id="diasPendientesNoGozados" name="diasPendientesNoGozados" min="0" step="1" inputmode="numeric">
+        <p class="hint" id="hint-dias-vacaciones">Te sugerimos un número según tus fechas, pero revísalo: si tienes más de un período acumulado sin descansar, ajústalo tú.</p>
+      </div>
+    </fieldset>
+
+    <button type="submit" class="btn-primary">Calcular mi liquidación</button>
+  </form>
+
+  <section id="resultado" class="card" hidden aria-live="polite">
+    <h2>Tu liquidación estimada</h2>
+
+    <div class="total-box">
+      <span class="total-label">Total estimado</span>
+      <span class="total-amount" id="total-amount">S/ 0.00</span>
+    </div>
+
+    <h3 class="subtitulo-resultado">Datos utilizados en el cálculo</h3>
+    <div class="datos-entrada" id="datos-entrada"></div>
+
+    <h3 class="subtitulo-resultado">Desglose</h3>
+    <table class="tabla-resumen">
+      <tbody id="tabla-resumen-body">
+      </tbody>
+    </table>
+
+    <div id="advertencias"></div>
+
+    <h3 class="subtitulo-resultado">¿Cómo se calculó?</h3>
+    <div id="memoria-calculo" class="memoria-calculo"></div>
+
+    <button type="button" id="btn-pdf" class="btn-secondary">Descargar PDF</button>
+
+    <p class="disclaimer">
+      <strong>Aviso legal:</strong> esta herramienta ofrece un cálculo referencial
+      basado en la normativa laboral peruana vigente y no constituye asesoría
+      legal. Para un caso concreto, especialmente en despidos, consulta con un
+      abogado laboralista.
+    </p>
+  </section>
+
+  <div class="ad-slot ad-slot--mid" data-slot="mid"></div>
+
+  <div class="articulo">
+    <h2>Qué entra en una liquidación y qué no</h2>
+    <p>Lo que se liquida al cesar son los beneficios que venías generando y que todavía no habías cobrado. Son cuatro, y no todos aplican siempre.</p>
+    <p>La CTS trunca es la parte del semestre en curso que tu empleador aún no había depositado. La CTS se deposita en mayo y en noviembre; si cesas a mitad de semestre, esos meses te los pagan directamente.</p>
+    <p>La gratificación trunca es la parte proporcional de la gratificación de julio o de diciembre por los meses que alcanzaste a trabajar del semestre, más la bonificación extraordinaria del 9% si estás en EsSalud o del 6,75% si estás afiliado a una EPS (Ley 30334).</p>
+    <p>Las vacaciones tienen dos partes distintas que conviene no confundir. Las truncas son la proporción del año en curso. Las no gozadas son días de años ya completos que nunca descansaste, y ahí hay un matiz que cambia mucho el monto: si pasaron más de doce meses desde que se generó el derecho sin que tomaras el descanso, corresponde una remuneración adicional (D.S. 012-92-TR, art. 23). Es lo que se llama «triple vacacional», y no ocurre siempre.</p>
+    <p>La indemnización por despido arbitrario es la única que no es un beneficio acumulado, sino una compensación. Solo aparece si te despidieron sin causa justa.</p>
+    <p>Lo que no entra: el sueldo de los días trabajados del último mes, que va en la planilla normal y no en la liquidación, y las utilidades, que se reparten en su propia oportunidad y con su propia regla.</p>
+    <h2>Cuándo corresponde indemnización y cuándo no</h2>
+    <p>Si renunciaste, no corresponde. La indemnización compensa un despido sin causa justa; una salida voluntaria no lo es, por incómodas que hayan sido las circunstancias.</p>
+    <p>Si te despidieron pero todavía estabas en período de prueba, tampoco. El período de prueba estándar es de tres meses (D.S. 003-97-TR, art. 10), ampliable a seis para personal de confianza y a doce para personal de dirección, siempre que esté pactado por escrito.</p>
+    <p>Si te despidieron sin causa y ya habías superado el período de prueba, la fórmula es una remuneración y media por cada año completo de servicios, con las fracciones en doceavos y treintavos, y un tope de doce remuneraciones (D.S. 003-97-TR, art. 38). Ese tope es la razón por la que dos personas con antigüedades muy distintas pueden recibir lo mismo.</p>
+    <p>Los contratos a plazo fijo siguen otra lógica: si te cortan antes del vencimiento pactado, la indemnización es una remuneración y media por cada mes que faltaba hasta esa fecha, con el mismo tope de doce.</p>
+    <p>Y una advertencia que conviene tener presente: esta calculadora estima el monto de la indemnización, no decide si tu despido fue arbitrario. Esa calificación es jurídica y depende de hechos que ninguna herramienta puede evaluar.</p>
+    <h2>Por qué tu cálculo puede no cuadrar con el de la empresa</h2>
+    <p>Casi siempre por la remuneración computable, no por las fórmulas. La base sobre la que se calcula cada concepto no es solo el sueldo básico: incluye la asignación familiar si te corresponde, y el promedio de tus comisiones o remuneración variable.</p>
+    <p>La asignación familiar es el 10% de la remuneración mínima vital (Ley 25129), y corresponde a quien tiene hijos menores de dieciocho años, o hasta veinticuatro si siguen estudios superiores. Es una causa frecuente de diferencia: se olvida al calcular, o se incluye cuando ya no correspondía.</p>
+    <p>El promedio de la variable tiene su propia complicación: cada concepto usa su propio período de referencia, y si tus comisiones fueron irregulares el promedio cambia según qué meses entren.</p>
+    <p>La tercera fuente de diferencias es el conteo de días. En planillas peruanas se usa el método comercial: meses de treinta días y años de trescientos sesenta. Contar los días reales del calendario da un número parecido pero distinto, y esa diferencia se acumula en cada concepto.</p>
+    <p>Si el total no cuadra, compara línea por línea con la memoria de cálculo que esta herramienta despliega, en lugar de comparar totales. La diferencia casi siempre está en un solo concepto, y localizarlo convierte un reclamo vago en uno concreto.</p>
+    <h2>Con qué valores calcula esta herramienta</h2>
+    <p>Remuneración mínima vital de S/ 1 130, vigente desde el 1 de enero de 2025 por el D.S. N.° 006-2024-TR. De ahí sale la asignación familiar de S/ 113. Hay un alza anunciada a S/ 1 300, pero mientras no se publique el decreto que la oficialice, la herramienta sigue usando el valor vigente: un cálculo con una cifra que aún no rige no le sirve a nadie.</p>
+    <p>Bonificación extraordinaria del 9% para afiliados a EsSalud y del 6,75% para afiliados a una EPS, según la Ley 30334. Factor de indemnización de 1,5 remuneraciones y tope de 12, según el D.S. 003-97-TR. Treinta días de vacaciones por año, según el D. Leg. 713.</p>
+    <p>El resultado muestra estos valores junto al cálculo, para que dentro de un año, leyendo un PDF guardado, se sepa con qué cifras se hizo.</p>
+    <p>Nada de lo que escribes sale de tu navegador: el cálculo entero ocurre en tu equipo. Puedes comprobarlo cargando la página, desconectando internet y usándola igual. Eso también significa que si cierras la pestaña sin descargar el PDF, el resultado se pierde: no hay copia en ningún sitio.</p>
+  </div>
+
+  <section class="faq" aria-labelledby="preguntas">
+    <h2 id="preguntas">Preguntas frecuentes</h2>
+    <details class="faq__item">
+      <summary>¿El resultado es exacto?</summary>
+      <p>Es una estimación fiel a las fórmulas y a los valores vigentes, y con el desglose a la vista. Pero depende de los datos que introduzcas, y hay situaciones que la herramienta no modela: récords vacacionales incompletos, personal de dirección, convenios colectivos con condiciones propias. Úsala para entender y para comparar, no como documento definitivo.</p>
+    </details>
+    <details class="faq__item">
+      <summary>¿Esto reemplaza a un abogado?</summary>
+      <p>No. Es información y un cálculo referencial, no asesoría legal. Sirve para llegar a la conversación sabiendo de qué se habla y con las cifras en la mano. Si hay un despido de por medio o el monto es importante, consulta con un abogado laboralista.</p>
+    </details>
+    <details class="faq__item">
+      <summary>¿Guardan mis datos de sueldo?</summary>
+      <p>No llegan a ningún servidor: el cálculo ocurre íntegramente en tu navegador. No hay base de datos, no hay cuenta y no hay registro de lo que escribiste.</p>
+    </details>
+    <details class="faq__item">
+      <summary>¿Sirve si renuncié en vez de que me despidieran?</summary>
+      <p>Sí. La CTS trunca, la gratificación trunca y las vacaciones se calculan igual en los dos casos. Lo único que cambia es la indemnización, que solo aparece si hubo despido arbitrario después del período de prueba.</p>
+    </details>
+    <details class="faq__item">
+      <summary>¿Qué es la «triple vacacional» y por qué a veces no aparece?</summary>
+      <p>Es la remuneración adicional que corresponde cuando pasaron más de doce meses desde que ganaste el derecho a vacaciones sin llegar a descansarlas. Si tomaste tus vacaciones, o si el año todavía no venció, no aplica.</p>
+    </details>
+    <details class="faq__item">
+      <summary>¿Puedo descargar el resultado?</summary>
+      <p>Sí, en PDF, con el desglose y la memoria de cálculo completos. El PDF se genera en tu propio navegador, igual que el cálculo.</p>
+    </details>
+  </section>
+
+  <div class="ad-slot ad-slot--bottom" data-slot="bottom"></div>
+
+</div>
+</main>
+<footer class="pie"><div class="contenedor">
+  <div class="pie__enlaces">
+    <a href="https://microtools.lat/" rel="noopener">M&aacute;s herramientas</a>
+    <a href="/legal/aviso-legal/">Aviso legal</a>
+    <a href="/legal/privacidad/">Política de privacidad</a>
+    <a href="/legal/cookies/">Política de cookies</a>
+  </div>
+  <p>C&aacute;lculo referencial, no sustituye asesor&iacute;a legal. El c&aacute;lculo ocurre en tu navegador: nada de lo que escribes se env&iacute;a a ning&uacute;n servidor.</p>
+  <p>&copy; 2026 <span data-marca>microtools</span> &middot; Perú</p>
+</div></footer>
+
+<script src="/js/vendor/jspdf.umd.min.js"></script>
+<script src="/js/engine.js"></script>
+<script src="/js/app.js"></script>
+<script type="module">
+  import { init } from '/js/pagina.js';
+  init();
+</script>
+</body>
+</html>

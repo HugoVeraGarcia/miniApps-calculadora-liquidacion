@@ -1,0 +1,98 @@
+{
+  "sitio": {
+    "idioma": "es",
+    "pais": "Perú",
+    "metaTitulo": "Calculadora de liquidación laboral en Perú: CTS y más",
+    "metaDescripcion": "Calcula gratis tu liquidación en Perú: CTS trunca, gratificación trunca, vacaciones e indemnización por despido. Con el desglose de cada concepto y su norma.",
+    "h1": "Calculadora de liquidación laboral en Perú",
+    "entrada": [
+      "Pon tus fechas y tu sueldo y obtén el cálculo de tu liquidación concepto por concepto: CTS trunca, gratificación trunca, vacaciones truncas y no gozadas, e indemnización por despido arbitrario si corresponde.",
+      "No da solo el total. Da el desglose y la memoria de cálculo, paso a paso, para que puedas comparar con la hoja que te entregó la empresa y ver exactamente en qué línea difieren."
+    ]
+  },
+  "secciones": [
+    {
+      "h2": "Qué entra en una liquidación y qué no",
+      "parrafos": [
+        "Lo que se liquida al cesar son los beneficios que venías generando y que todavía no habías cobrado. Son cuatro, y no todos aplican siempre.",
+        "La CTS trunca es la parte del semestre en curso que tu empleador aún no había depositado. La CTS se deposita en mayo y en noviembre; si cesas a mitad de semestre, esos meses te los pagan directamente.",
+        "La gratificación trunca es la parte proporcional de la gratificación de julio o de diciembre por los meses que alcanzaste a trabajar del semestre, más la bonificación extraordinaria del 9% si estás en EsSalud o del 6,75% si estás afiliado a una EPS (Ley 30334).",
+        "Las vacaciones tienen dos partes distintas que conviene no confundir. Las truncas son la proporción del año en curso. Las no gozadas son días de años ya completos que nunca descansaste, y ahí hay un matiz que cambia mucho el monto: si pasaron más de doce meses desde que se generó el derecho sin que tomaras el descanso, corresponde una remuneración adicional (D.S. 012-92-TR, art. 23). Es lo que se llama «triple vacacional», y no ocurre siempre.",
+        "La indemnización por despido arbitrario es la única que no es un beneficio acumulado, sino una compensación. Solo aparece si te despidieron sin causa justa.",
+        "Lo que no entra: el sueldo de los días trabajados del último mes, que va en la planilla normal y no en la liquidación, y las utilidades, que se reparten en su propia oportunidad y con su propia regla."
+      ]
+    },
+    {
+      "h2": "Cuándo corresponde indemnización y cuándo no",
+      "parrafos": [
+        "Si renunciaste, no corresponde. La indemnización compensa un despido sin causa justa; una salida voluntaria no lo es, por incómodas que hayan sido las circunstancias.",
+        "Si te despidieron pero todavía estabas en período de prueba, tampoco. El período de prueba estándar es de tres meses (D.S. 003-97-TR, art. 10), ampliable a seis para personal de confianza y a doce para personal de dirección, siempre que esté pactado por escrito.",
+        "Si te despidieron sin causa y ya habías superado el período de prueba, la fórmula es una remuneración y media por cada año completo de servicios, con las fracciones en doceavos y treintavos, y un tope de doce remuneraciones (D.S. 003-97-TR, art. 38). Ese tope es la razón por la que dos personas con antigüedades muy distintas pueden recibir lo mismo.",
+        "Los contratos a plazo fijo siguen otra lógica: si te cortan antes del vencimiento pactado, la indemnización es una remuneración y media por cada mes que faltaba hasta esa fecha, con el mismo tope de doce.",
+        "Y una advertencia que conviene tener presente: esta calculadora estima el monto de la indemnización, no decide si tu despido fue arbitrario. Esa calificación es jurídica y depende de hechos que ninguna herramienta puede evaluar."
+      ]
+    },
+    {
+      "h2": "Por qué tu cálculo puede no cuadrar con el de la empresa",
+      "parrafos": [
+        "Casi siempre por la remuneración computable, no por las fórmulas. La base sobre la que se calcula cada concepto no es solo el sueldo básico: incluye la asignación familiar si te corresponde, y el promedio de tus comisiones o remuneración variable.",
+        "La asignación familiar es el 10% de la remuneración mínima vital (Ley 25129), y corresponde a quien tiene hijos menores de dieciocho años, o hasta veinticuatro si siguen estudios superiores. Es una causa frecuente de diferencia: se olvida al calcular, o se incluye cuando ya no correspondía.",
+        "El promedio de la variable tiene su propia complicación: cada concepto usa su propio período de referencia, y si tus comisiones fueron irregulares el promedio cambia según qué meses entren.",
+        "La tercera fuente de diferencias es el conteo de días. En planillas peruanas se usa el método comercial: meses de treinta días y años de trescientos sesenta. Contar los días reales del calendario da un número parecido pero distinto, y esa diferencia se acumula en cada concepto.",
+        "Si el total no cuadra, compara línea por línea con la memoria de cálculo que esta herramienta despliega, en lugar de comparar totales. La diferencia casi siempre está en un solo concepto, y localizarlo convierte un reclamo vago en uno concreto."
+      ]
+    },
+    {
+      "h2": "Con qué valores calcula esta herramienta",
+      "parrafos": [
+        "Remuneración mínima vital de S/ 1 130, vigente desde el 1 de enero de 2025 por el D.S. N.° 006-2024-TR. De ahí sale la asignación familiar de S/ 113. Hay un alza anunciada a S/ 1 300, pero mientras no se publique el decreto que la oficialice, la herramienta sigue usando el valor vigente: un cálculo con una cifra que aún no rige no le sirve a nadie.",
+        "Bonificación extraordinaria del 9% para afiliados a EsSalud y del 6,75% para afiliados a una EPS, según la Ley 30334. Factor de indemnización de 1,5 remuneraciones y tope de 12, según el D.S. 003-97-TR. Treinta días de vacaciones por año, según el D. Leg. 713.",
+        "El resultado muestra estos valores junto al cálculo, para que dentro de un año, leyendo un PDF guardado, se sepa con qué cifras se hizo.",
+        "Nada de lo que escribes sale de tu navegador: el cálculo entero ocurre en tu equipo. Puedes comprobarlo cargando la página, desconectando internet y usándola igual. Eso también significa que si cierras la pestaña sin descargar el PDF, el resultado se pierde: no hay copia en ningún sitio."
+      ]
+    }
+  ],
+  "faq": [
+    [
+      "¿El resultado es exacto?",
+      "Es una estimación fiel a las fórmulas y a los valores vigentes, y con el desglose a la vista. Pero depende de los datos que introduzcas, y hay situaciones que la herramienta no modela: récords vacacionales incompletos, personal de dirección, convenios colectivos con condiciones propias. Úsala para entender y para comparar, no como documento definitivo."
+    ],
+    [
+      "¿Esto reemplaza a un abogado?",
+      "No. Es información y un cálculo referencial, no asesoría legal. Sirve para llegar a la conversación sabiendo de qué se habla y con las cifras en la mano. Si hay un despido de por medio o el monto es importante, consulta con un abogado laboralista."
+    ],
+    [
+      "¿Guardan mis datos de sueldo?",
+      "No llegan a ningún servidor: el cálculo ocurre íntegramente en tu navegador. No hay base de datos, no hay cuenta y no hay registro de lo que escribiste."
+    ],
+    [
+      "¿Sirve si renuncié en vez de que me despidieran?",
+      "Sí. La CTS trunca, la gratificación trunca y las vacaciones se calculan igual en los dos casos. Lo único que cambia es la indemnización, que solo aparece si hubo despido arbitrario después del período de prueba."
+    ],
+    [
+      "¿Qué es la «triple vacacional» y por qué a veces no aparece?",
+      "Es la remuneración adicional que corresponde cuando pasaron más de doce meses desde que ganaste el derecho a vacaciones sin llegar a descansarlas. Si tomaste tus vacaciones, o si el año todavía no venció, no aplica."
+    ],
+    [
+      "¿Puedo descargar el resultado?",
+      "Sí, en PDF, con el desglose y la memoria de cálculo completos. El PDF se genera en tu propio navegador, igual que el cálculo."
+    ]
+  ],
+  "legales": [
+    {
+      "ruta": "/legal/aviso-legal/",
+      "archivo": "legal/aviso-legal/index.html",
+      "titulo": "Aviso legal"
+    },
+    {
+      "ruta": "/legal/privacidad/",
+      "archivo": "legal/privacidad/index.html",
+      "titulo": "Política de privacidad"
+    },
+    {
+      "ruta": "/legal/cookies/",
+      "archivo": "legal/cookies/index.html",
+      "titulo": "Política de cookies"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores
+.vscode/
+.idea/
+*.swp
+
+# Node (este proyecto no usa dependencias, pero por si acaso)
+node_modules/
+npm-debug.log*
+package-lock.json
+
+# Netlify
+.netlify/
+
+# Temporales
+*.tmp
+*.bak
+*~

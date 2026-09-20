@@ -1,0 +1,137 @@
+  <form id="form-liquidacion" class="card" novalidate>
+
+    <fieldset>
+      <legend>Tus datos</legend>
+
+      <div class="field-row">
+        <label for="fechaIngreso">Fecha de ingreso a la empresa</label>
+        <input type="date" id="fechaIngreso" name="fechaIngreso" required>
+      </div>
+
+      <div class="field-row">
+        <label for="fechaCese">Fecha de salida / cese</label>
+        <input type="date" id="fechaCese" name="fechaCese" required>
+      </div>
+
+      <div class="field-row">
+        <label for="sueldoBasico">Remuneración mensual bruta (sueldo básico)</label>
+        <div class="input-prefix">
+          <span>S/</span>
+          <input type="number" id="sueldoBasico" name="sueldoBasico" min="0" step="0.01" required inputmode="decimal">
+        </div>
+      </div>
+
+      <div class="field-row field-toggle">
+        <label for="recibeAsignacionFamiliar">¿Recibe asignación familiar? (S/ 113 — tienes hijos menores de 18, o hasta 24 si estudian)</label>
+        <input type="checkbox" id="recibeAsignacionFamiliar" name="recibeAsignacionFamiliar">
+      </div>
+
+      <div class="field-row field-toggle">
+        <label for="tieneVariable">¿Tienes comisiones o remuneración variable?</label>
+        <input type="checkbox" id="tieneVariable" name="tieneVariable">
+      </div>
+
+      <div class="field-row" id="row-variable" hidden>
+        <label for="variablePromedio">Promedio de comisiones/variable de los últimos 6 meses</label>
+        <div class="input-prefix">
+          <span>S/</span>
+          <input type="number" id="variablePromedio" name="variablePromedio" min="0" step="0.01" inputmode="decimal">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <label for="regimenSalud">Sistema de salud al que estás afiliado</label>
+        <select id="regimenSalud" name="regimenSalud">
+          <option value="EsSalud" selected>EsSalud</option>
+          <option value="EPS">EPS</option>
+        </select>
+        <p class="hint">Define si el bono extra de tu gratificación es 9% o 6.75%.</p>
+      </div>
+
+    </fieldset>
+
+    <fieldset>
+      <legend>Tu cese</legend>
+
+      <div class="field-row">
+        <label for="motivoCese">Motivo de cese</label>
+        <select id="motivoCese" name="motivoCese">
+          <option value="renuncia_voluntaria" selected>Renuncia voluntaria</option>
+          <option value="despido_arbitrario">Despido arbitrario</option>
+          <option value="mutuo_disenso">Mutuo disenso</option>
+          <option value="fin_contrato_plazo_fijo">Fin de contrato a plazo fijo</option>
+          <option value="despido_justificado">Despido justificado</option>
+        </select>
+      </div>
+
+      <div class="field-row">
+        <label for="tipoContrato">Tipo de contrato</label>
+        <select id="tipoContrato" name="tipoContrato">
+          <option value="indeterminado" selected>Indeterminado</option>
+          <option value="plazo_fijo">Plazo fijo</option>
+        </select>
+      </div>
+
+      <div class="field-row" id="row-fin-contrato" hidden>
+        <label for="fechaFinContrato">Fecha de fin de contrato (según lo pactado)</label>
+        <input type="date" id="fechaFinContrato" name="fechaFinContrato">
+      </div>
+
+      <div class="field-row" id="row-periodo-prueba" hidden>
+        <label for="periodoPruebaDistinto">¿Tu contrato establece un período de prueba distinto a los 3 meses estándar? (ej. personal de confianza: 6 meses, dirección: 12 meses)</label>
+        <select id="periodoPruebaDistinto" name="periodoPruebaDistinto">
+          <option value="no" selected>No, es el estándar de 3 meses</option>
+          <option value="si">Sí, es distinto</option>
+        </select>
+      </div>
+
+      <div class="field-row" id="row-periodo-prueba-meses" hidden>
+        <label for="periodoPruebaMeses">Duración del período de prueba pactado (en meses)</label>
+        <input type="number" id="periodoPruebaMeses" name="periodoPruebaMeses" min="1" max="12" step="1" value="6">
+      </div>
+
+    </fieldset>
+
+    <fieldset id="fieldset-vacaciones" hidden>
+      <legend>Vacaciones</legend>
+      <div class="field-row">
+        <label for="diasPendientesNoGozados">Días de vacaciones ganados y no gozados (de años ya completos)</label>
+        <input type="number" id="diasPendientesNoGozados" name="diasPendientesNoGozados" min="0" step="1" inputmode="numeric">
+        <p class="hint" id="hint-dias-vacaciones">Te sugerimos un número según tus fechas, pero revísalo: si tienes más de un período acumulado sin descansar, ajústalo tú.</p>
+      </div>
+    </fieldset>
+
+    <button type="submit" class="btn-primary">Calcular mi liquidación</button>
+  </form>
+
+  <section id="resultado" class="card" hidden aria-live="polite">
+    <h2>Tu liquidación estimada</h2>
+
+    <div class="total-box">
+      <span class="total-label">Total estimado</span>
+      <span class="total-amount" id="total-amount">S/ 0.00</span>
+    </div>
+
+    <h3 class="subtitulo-resultado">Datos utilizados en el cálculo</h3>
+    <div class="datos-entrada" id="datos-entrada"></div>
+
+    <h3 class="subtitulo-resultado">Desglose</h3>
+    <table class="tabla-resumen">
+      <tbody id="tabla-resumen-body">
+      </tbody>
+    </table>
+
+    <div id="advertencias"></div>
+
+    <h3 class="subtitulo-resultado">¿Cómo se calculó?</h3>
+    <div id="memoria-calculo" class="memoria-calculo"></div>
+
+    <button type="button" id="btn-pdf" class="btn-secondary">Descargar PDF</button>
+
+    <p class="disclaimer">
+      <strong>Aviso legal:</strong> esta herramienta ofrece un cálculo referencial
+      basado en la normativa laboral peruana vigente y no constituye asesoría
+      legal. Para un caso concreto, especialmente en despidos, consulta con un
+      abogado laboralista.
+    </p>
+  </section>
