@@ -25,6 +25,11 @@ const leerConfig = (clave) => (configJs.match(new RegExp(`${clave}:\\s*'([^']*)'
 const DOMINIO = leerConfig('dominio').replace(/\/$/, '');
 const MARCA = leerConfig('marca') || 'microtools';
 
+/* El sitio raiz del portafolio. Esta herramienta es una de varias, y desde
+   aqui se tiene que poder volver al indice: la marca de la cabecera lleva
+   alli y el nombre de la app lleva a la portada de esta herramienta. */
+const HUB = 'https://microtools.lat/';
+
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const abs = (ruta) => (DOMINIO ? DOMINIO + ruta : ruta);
 const avisos = [];
@@ -60,7 +65,7 @@ const ICONO_CANDADO = '<svg width="16" height="16" viewBox="0 0 16 16" fill="non
 
 const NAV = [
   ['/', 'Calculadora'],
-  ['https://microtools.lat/', 'Más herramientas'],
+  [HUB, 'Más herramientas'],
 ];
 
 function cabecera(rutaActual) {
@@ -71,7 +76,11 @@ function cabecera(rutaActual) {
   }).join('\n    ');
 
   return `<header class="cabecera"><div class="contenedor cabecera__fila">
-  <a class="logo" href="/"><span data-marca>${esc(MARCA)}</span><span class="logo__sep" aria-hidden="true">/</span><span class="logo__app">Liquidaci&oacute;n</span></a>
+  <div class="logo">
+    <a class="logo__marca" href="${HUB}" data-pista="Ir a microtools, el sitio donde están todas las herramientas."><span data-marca>${esc(MARCA)}</span></a>
+    <span class="logo__sep" aria-hidden="true">/</span>
+    <a class="logo__app" href="/" data-pista="Volver a la portada de la calculadora de liquidación.">Liquidaci&oacute;n</a>
+  </div>
   <nav class="nav" aria-label="Principal">
     ${enlaces}
   </nav>
@@ -81,7 +90,7 @@ function cabecera(rutaActual) {
 function pie() {
   return `<footer class="pie"><div class="contenedor">
   <div class="pie__enlaces">
-    <a href="https://microtools.lat/" rel="noopener">M&aacute;s herramientas</a>
+    <a href="${HUB}" rel="noopener">M&aacute;s herramientas</a>
     ${datos.legales.map((l) => `<a href="${l.ruta}">${esc(l.titulo)}</a>`).join('\n    ')}
   </div>
   <p>C&aacute;lculo referencial, no sustituye asesor&iacute;a legal. El c&aacute;lculo ocurre en tu navegador: nada de lo que escribes se env&iacute;a a ning&uacute;n servidor.</p>
@@ -267,7 +276,6 @@ function paginaLegal(l) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(l.titulo)} — ${esc(MARCA)}</title>
 <meta name="description" content="${esc(l.titulo)} de la calculadora de liquidación de ${esc(MARCA)}.">
-<meta name="robots" content="noindex, follow">
 ${DOMINIO ? `<link rel="canonical" href="${abs(l.ruta)}">` : ''}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/css/app.css">
@@ -293,14 +301,25 @@ ${pie()}
 
 function sitemap() {
   const hoy = new Date().toISOString().slice(0, 10);
+  const entrada = (ruta, prioridad, frecuencia) => `  <url>
+    <loc>${abs(ruta)}</loc>
+    <lastmod>${hoy}</lastmod>
+    <changefreq>${frecuencia}</changefreq>
+    <priority>${prioridad}</priority>
+  </url>`;
+
+  // Las legales entran en el sitemap aunque nadie las busque. Quien revisa el
+  // sitio —AdSense sobre todo— espera encontrar la politica de privacidad
+  // indexada, no solo enlazada en el pie. Prioridad baja y cambio anual, que
+  // es lo que de verdad son.
+  const urls = [
+    entrada('/', '1.0', 'monthly'),
+    ...datos.legales.map((l) => entrada(l.ruta, '0.3', 'yearly')),
+  ].join('\n');
+
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>${abs('/')}</loc>
-    <lastmod>${hoy}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
-  </url>
+${urls}
 </urlset>
 `;
 }

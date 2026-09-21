@@ -118,10 +118,21 @@ a:hover { color: var(--c-accent-hover); }
   display: flex; align-items: center; justify-content: space-between;
   gap: var(--e4); min-height: 60px;
 }
+/* La marca lleva al portafolio y el nombre de la app a la portada de esta
+   herramienta: son dos destinos distintos, asi que son dos enlaces distintos.
+   Un solo enlace obligaba a salir por el pie para volver al indice. */
 .logo {
+  display: inline-flex; align-items: center;
   font-weight: 700; font-size: 15px; letter-spacing: -.01em;
-  color: var(--c-text); text-decoration: none;
 }
+.logo__marca, .logo__app { text-decoration: none; }
+.logo__marca { color: var(--c-text); }
+/* La regla generica a:hover tiene mas especificidad que .logo__marca y teñia
+   la marca del color de acento al pasar por encima, que es justo el color con
+   el que se distingue el nombre de la app. Aqui se fija el color y el subrayado
+   basta para decir que es pulsable. */
+.logo__marca:hover { color: var(--c-text); }
+.logo__marca:hover, .logo__app:hover { text-decoration: underline; }
 .logo__sep { color: var(--c-muted); margin: 0 var(--e1); font-weight: 400; }
 .logo__app { color: var(--c-accent); }
 
