@@ -16,6 +16,10 @@ const rellenados = new WeakSet();
 function inyectarScript() {
   if (scriptPedido || !listoAdSense()) return;
   scriptPedido = true;
+  // El HTML generado ya trae el script en la cabecera, para que el robot de
+  // verificacion de AdSense lo vea sin ejecutar JavaScript. Si esta, no se
+  // duplica: dos cargas del mismo script dan errores en consola.
+  if (document.querySelector('script[src*="adsbygoogle.js"]')) return;
   const s = document.createElement('script');
   s.async = true;
   s.crossOrigin = 'anonymous';

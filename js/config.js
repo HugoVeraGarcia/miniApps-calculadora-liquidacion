@@ -17,7 +17,7 @@ export const CONFIG = {
   correo: 'soporte.microtools.lat@gmail.com',
 
   adsense: {
-    cliente: '',            // 'ca-pub-0000000000000000'
+    cliente: 'ca-pub-4794558545797945',
     bloques: {
       top: '',              // ID del bloque display horizontal
       resultado: '',        // ID del bloque 300x250 junto al resultado

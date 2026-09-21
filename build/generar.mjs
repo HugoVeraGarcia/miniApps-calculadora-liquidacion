@@ -24,6 +24,19 @@ const configJs = readFileSync(join(RAIZ, 'js', 'config.js'), 'utf8');
 const leerConfig = (clave) => (configJs.match(new RegExp(`${clave}:\\s*'([^']*)'`)) || [])[1] || '';
 const DOMINIO = leerConfig('dominio').replace(/\/$/, '');
 const MARCA = leerConfig('marca') || 'microtools';
+const CLIENTE = leerConfig('cliente');
+
+/* El ID de editor de AdSense va en el HTML generado, NO inyectado por
+   JavaScript. El robot que verifica el sitio lee el HTML tal como llega del
+   servidor: un script añadido en el evento load no lo ve, y la verificación
+   falla aunque los anuncios funcionen. La meta es el método de verificación
+   que documenta Google; el script es la carga real. */
+function etiquetasAdSense() {
+  if (!CLIENTE) return '';
+  return `<meta name="google-adsense-account" content="${CLIENTE}">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${CLIENTE}" crossorigin="anonymous"></script>`;
+}
+
 
 /* El sitio raiz del portafolio. Esta herramienta es una de varias, y desde
    aqui se tiene que poder volver al indice: la marca de la cabecera lleva
@@ -162,6 +175,7 @@ ${DOMINIO ? `<meta property="og:url" content="${abs('/')}">` : ''}
 <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
 <link rel="stylesheet" href="/css/app.css">
 ${datosEstructurados()}
+${etiquetasAdSense()}
 </head>
 <body>
 <a class="salto-contenido" href="#contenido">Ir al contenido</a>
@@ -279,6 +293,7 @@ function paginaLegal(l) {
 ${DOMINIO ? `<link rel="canonical" href="${abs(l.ruta)}">` : ''}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/css/app.css">
+${etiquetasAdSense()}
 </head>
 <body>
 <a class="salto-contenido" href="#contenido">Ir al contenido</a>
