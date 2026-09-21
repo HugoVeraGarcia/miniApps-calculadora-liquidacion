@@ -176,53 +176,87 @@ function calcularCTS({ fechaIngreso, fechaCese, sueldoBasico, recibeAsignacionFa
 // ---------------------------------------------------------------------------
 
 /**
- * Sugerencia automática de días de vacaciones pendientes de gozar, para
- * precargar el campo editable del formulario. Solo cubre el último récord
- * anual cerrado (el caso más común); si el trabajador tiene más de un año
- * acumulado sin descansar, debe ajustar el número manualmente — por eso el
- * campo es editable y no un simple sí/no.
+ * Días de vacaciones GANADOS desde el ingreso hasta el cese.
+ *
+ * Es el techo de lo que se puede cobrar, no lo que se cobra: cada récord anual
+ * cerrado gana 30 días, y el récord en curso gana la parte proporcional —2,5
+ * días por mes completo y 1/12 de día por cada día suelto—. De estos días, el
+ * trabajador habrá descansado algunos y otros no; cuáles, solo lo sabe él.
+ *
+ * Por eso esta función NO decide el pago. Devuelve el total ganado para
+ * mostrarlo como referencia, y es el usuario quien declara cuántos de esos
+ * días quedaron sin gozar. Antes se asumía que no había descansado nunca en el
+ * récord en curso, y eso pagaba de más a quien sí había salido de vacaciones.
  */
-function sugerirDiasVacacionesPendientes({ fechaIngreso, fechaCese, constants = LEGAL_CONSTANTS_2026 }) {
+function calcularDiasVacacionesGanados({ fechaIngreso, fechaCese, constants = LEGAL_CONSTANTS_2026 }) {
   const antiguedadTotal = contarPeriodo(fechaIngreso, fechaCese);
   const añosCompletos = Math.floor(antiguedadTotal.mesesCompletos / 12);
-  if (añosCompletos < 1) return 0;
-
-  const fechaCierreUltimoRecord = addMonths(fechaIngreso, añosCompletos * 12);
-  const fechaLimiteSinPenalidad = addMonths(fechaCierreUltimoRecord, constants.PLAZO_GOCE_VACACIONES_MESES);
-  const plazoVencido = compareDate(fechaCese, fechaLimiteSinPenalidad) > 0;
-
-  // Si venció el plazo de 12 meses sin descanso, la ley agrega una
-  // indemnización equivalente (D.S. 012-92-TR, art. 23): se sugiere el doble
-  // de días como referencia, editable por el usuario.
-  return plazoVencido ? constants.DIAS_VACACIONES_ANUALES * 2 : constants.DIAS_VACACIONES_ANUALES;
-}
-
-function calcularVacaciones({ fechaIngreso, fechaCese, sueldoBasico, recibeAsignacionFamiliar, variablePromedio = 0, diasPendientesNoGozados = null, constants = LEGAL_CONSTANTS_2026 }) {
-  const remComputable = remuneracionBase({ sueldoBasico, recibeAsignacionFamiliar, variablePromedio, constants });
-  const antiguedadTotal = contarPeriodo(fechaIngreso, fechaCese);
-  const añosCompletos = Math.floor(antiguedadTotal.mesesCompletos / 12);
-
   const inicioRecordActual = addMonths(fechaIngreso, añosCompletos * 12);
   const { mesesCompletos, diasSueltos } = contarPeriodo(inicioRecordActual, fechaCese);
 
-  const truncas = mesesCompletos < 1 ? 0 : (remComputable / 12) * mesesCompletos + (remComputable / 360) * diasSueltos;
+  const porRecordsCerrados = añosCompletos * constants.DIAS_VACACIONES_ANUALES;
+  const porRecordEnCurso = (constants.DIAS_VACACIONES_ANUALES / 12) * mesesCompletos
+    + (constants.DIAS_VACACIONES_ANUALES / 360) * diasSueltos;
 
-  const diasSugeridos = sugerirDiasVacacionesPendientes({ fechaIngreso, fechaCese, constants });
-  const dias = diasPendientesNoGozados === null || diasPendientesNoGozados === undefined ? diasSugeridos : Math.max(0, Number(diasPendientesNoGozados) || 0);
-  const totalNoGozadas = (remComputable / 30) * dias;
-
-  const noGozadas = {
-    aplica: dias > 0,
-    dias,
-    diasSugeridos,
-    total: totalNoGozadas,
+  return {
+    añosCompletos,
+    inicioRecordActual: toISO(inicioRecordActual),
+    mesesRecordActual: mesesCompletos,
+    diasSueltosRecordActual: diasSueltos,
+    porRecordsCerrados,
+    porRecordEnCurso,
+    total: porRecordsCerrados + porRecordEnCurso,
   };
+}
+
+/**
+ * ¿Venció el plazo para gozar el último récord cerrado? D.S. 012-92-TR art. 23
+ * añade una indemnización cuando se pasa el año sin descansar. La calculadora
+ * no la computa todavía; se devuelve el dato para poder avisar.
+ */
+function plazoGoceVencido({ fechaIngreso, fechaCese, constants = LEGAL_CONSTANTS_2026 }) {
+  const { mesesCompletos } = contarPeriodo(fechaIngreso, fechaCese);
+  const añosCompletos = Math.floor(mesesCompletos / 12);
+  if (añosCompletos < 1) return false;
+  const cierreUltimoRecord = addMonths(fechaIngreso, añosCompletos * 12);
+  const limite = addMonths(cierreUltimoRecord, constants.PLAZO_GOCE_VACACIONES_MESES);
+  return compareDate(fechaCese, limite) > 0;
+}
+
+/**
+ * Pago de vacaciones: un solo número, los días que el trabajador declara no
+ * haber gozado, a razón de un treintavo de la remuneración computable por día.
+ *
+ * El cálculo no separa "truncas" de "récords cerrados" porque un día vale lo
+ * mismo venga de donde venga: (rem/12) × mes es idéntico a (rem/30) × 2,5
+ * días. Separarlos obligaba a suponer que el récord en curso no se había
+ * descansado nunca, que es exactamente lo que no se puede suponer.
+ */
+function calcularVacaciones({ fechaIngreso, fechaCese, sueldoBasico, recibeAsignacionFamiliar, variablePromedio = 0, diasNoGozados = null, diasPendientesNoGozados = null, constants = LEGAL_CONSTANTS_2026 }) {
+  const remComputable = remuneracionBase({ sueldoBasico, recibeAsignacionFamiliar, variablePromedio, constants });
+  const ganados = calcularDiasVacacionesGanados({ fechaIngreso, fechaCese, constants });
+
+  // diasPendientesNoGozados es el nombre antiguo del mismo dato: se acepta
+  // para no romper a quien llame al motor con la firma de antes.
+  const declarado = diasNoGozados !== null && diasNoGozados !== undefined
+    ? diasNoGozados : diasPendientesNoGozados;
+
+  const dias = declarado === null || declarado === undefined || declarado === ''
+    ? 0 : Math.max(0, Number(declarado) || 0);
+
+  const valorDia = remComputable / 30;
+  const total = valorDia * dias;
 
   return {
     remComputable,
-    truncas: { mesesCompletos, diasSueltos, total: truncas, inicioRecordActual: toISO(inicioRecordActual) },
-    noGozadas,
-    total: truncas + noGozadas.total,
+    valorDia,
+    ganados,
+    diasNoGozados: dias,
+    // Declarar más días de los ganados es casi siempre un error de tecleo, y
+    // vale dinero: se avisa en vez de corregirlo por su cuenta.
+    excedeGanados: dias > ganados.total + 1e-9,
+    plazoGoceVencido: plazoGoceVencido({ fechaIngreso, fechaCese, constants }),
+    total,
   };
 }
 
@@ -304,6 +338,7 @@ function calcularLiquidacionTotal(inputs) {
     motivoCese,
     tipoContrato,
     fechaFinContrato: fechaFinContratoISO,
+    diasNoGozados,
     diasPendientesNoGozados,
     periodoPruebaDistinto,
     periodoPruebaMeses,
@@ -319,9 +354,10 @@ function calcularLiquidacionTotal(inputs) {
 
   const gratificacion = calcularGratificacion({ ...base, regimenSalud });
   const cts = calcularCTS(base);
+  const declaradoVac = diasNoGozados !== undefined ? diasNoGozados : diasPendientesNoGozados;
   const vacaciones = calcularVacaciones({
     ...base,
-    diasPendientesNoGozados: diasPendientesNoGozados === '' || diasPendientesNoGozados === undefined ? null : diasPendientesNoGozados,
+    diasNoGozados: declaradoVac === '' || declaradoVac === undefined ? null : declaradoVac,
   });
   const indemnizacion = calcularIndemnizacion({
     ...base,
@@ -353,7 +389,8 @@ const LiquidacionEngine = {
   calcularGratificacion,
   calcularCTS,
   calcularVacaciones,
-  sugerirDiasVacacionesPendientes,
+  calcularDiasVacacionesGanados,
+  plazoGoceVencido,
   calcularIndemnizacion,
   calcularLiquidacionTotal,
 };

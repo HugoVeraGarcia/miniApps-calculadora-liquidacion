@@ -378,6 +378,18 @@ legend {
   margin-bottom: var(--e2); line-height: 1.5;
 }
 
+/* Los dias ganados: es el dato que permite al usuario contrastar lo que va a
+   declarar. Se lee antes que el campo, asi que va sobre el. */
+.nota-ganados {
+  margin: 0 0 var(--e3);
+  padding: var(--e3) var(--e4);
+  background: var(--c-accent-soft);
+  border: 1px solid var(--c-accent-borde);
+  border-radius: var(--r-control);
+  font-size: 14px;
+  color: var(--c-text);
+}
+
 .aviso {
   background: var(--c-warn-soft);
   border: 1px solid var(--c-warn-borde);

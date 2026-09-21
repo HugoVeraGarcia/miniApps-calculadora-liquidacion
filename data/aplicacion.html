@@ -94,11 +94,13 @@
 
     <fieldset id="fieldset-vacaciones" hidden>
       <legend>Vacaciones</legend>
+      <p class="nota-ganados" id="dias-ganados" hidden></p>
       <div class="field-row">
-        <label for="diasPendientesNoGozados">Días de vacaciones ganados y no gozados (de años ya completos)</label>
-        <input type="number" id="diasPendientesNoGozados" name="diasPendientesNoGozados" min="0" step="1" inputmode="numeric">
-        <p class="hint" id="hint-dias-vacaciones">Te sugerimos un número según tus fechas, pero revísalo: si tienes más de un período acumulado sin descansar, ajústalo tú.</p>
+        <label for="diasPendientesNoGozados">¿Cuántos de esos días NO llegaste a gozar?</label>
+        <input type="number" id="diasPendientesNoGozados" name="diasPendientesNoGozados" min="0" step="1" inputmode="numeric" placeholder="Ej.: 32">
+        <p class="hint" id="hint-dias-vacaciones">Solo lo sabes tú, así que no lo damos por supuesto: cuenta los días que tenías derecho a descansar y no descansaste, de cualquier año. El pago se calcula sobre este número.</p>
       </div>
+      <p class="aviso" id="aviso-vacaciones" hidden></p>
     </fieldset>
 
     <button type="submit" class="btn-primary">Calcular mi liquidación</button>

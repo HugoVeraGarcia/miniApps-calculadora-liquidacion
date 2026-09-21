@@ -1,6 +1,6 @@
 (function () {
 'use strict';
-const { calcularLiquidacionTotal, contarPeriodo, parseISO, sugerirDiasVacacionesPendientes, LEGAL_CONSTANTS_2026 } = window.LiquidacionEngine;
+const { calcularLiquidacionTotal, contarPeriodo, parseISO, calcularDiasVacacionesGanados, LEGAL_CONSTANTS_2026 } = window.LiquidacionEngine;
 
 const form = document.getElementById('form-liquidacion');
 const rowVariable = document.getElementById('row-variable');
@@ -9,11 +9,14 @@ const rowPeriodoPrueba = document.getElementById('row-periodo-prueba');
 const rowPeriodoPruebaMeses = document.getElementById('row-periodo-prueba-meses');
 const fieldsetVacaciones = document.getElementById('fieldset-vacaciones');
 const diasPendientesInput = document.getElementById('diasPendientesNoGozados');
+const diasGanadosEl = document.getElementById('dias-ganados');
+const avisoVacacionesEl = document.getElementById('aviso-vacaciones');
 
-let diasVacacionesEditadoManualmente = false;
-diasPendientesInput.addEventListener('input', () => {
-  diasVacacionesEditadoManualmente = true;
-});
+/* Los dias ganados hasta el cese, para enseñarlos como referencia y para
+   avisar si el usuario declara mas dias de los que le corresponden. El campo
+   NO se precarga: cuantos dias descanso solo lo sabe el. */
+let ganadosActuales = null;
+diasPendientesInput.addEventListener('input', revisarDiasDeclarados);
 
 const fmt = new Intl.NumberFormat('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 function soles(n) {
@@ -57,7 +60,7 @@ function construirDatosEntrada(inputs) {
     datos.push(['Fecha de fin de contrato pactada', formatFecha(inputs.fechaFinContrato)]);
   }
   if (Number(inputs.diasPendientesNoGozados) > 0) {
-    datos.push(['Días de vacaciones pendientes considerados', `${inputs.diasPendientesNoGozados} días`]);
+    datos.push(['Días de vacaciones no gozados declarados', `${inputs.diasPendientesNoGozados} días`]);
   }
   return datos;
 }
@@ -112,19 +115,34 @@ function construirMemoriaCalculo(r, inputs) {
   }
 
   // --- Vacaciones ---
+  const g = r.vacaciones.ganados;
   const vLineas = [
-    `Récord vacacional en curso: desde el ${formatFecha(r.vacaciones.truncas.inicioRecordActual)}.`,
-    `Tiempo trabajado en el récord: ${r.vacaciones.truncas.mesesCompletos} meses completos + ${r.vacaciones.truncas.diasSueltos} días.`,
+    g.añosCompletos > 0
+      ? `Años completos trabajados: ${g.añosCompletos} → ${g.porRecordsCerrados} días ganados.`
+      : 'Aún no cumples un año completo, así que no hay días de años cerrados.',
+    `Año en curso: desde el ${formatFecha(g.inicioRecordActual)}, ${g.mesesRecordActual} meses completos`
+      + ` + ${g.diasSueltosRecordActual} días → ${numDias(g.porRecordEnCurso)} días ganados.`,
+    `Total de días ganados hasta el cese: ${numDias(g.total)} días.`,
     `Remuneración computable = sueldo (${soles(sueldo)}) + asignación familiar (${soles(asignacion)}) + variable (${soles(variable)}) = ${soles(r.vacaciones.remComputable)}.`,
-    `Truncas = (${soles(r.vacaciones.remComputable)} ÷ 12) × ${r.vacaciones.truncas.mesesCompletos} + (${soles(r.vacaciones.remComputable)} ÷ 360) × ${r.vacaciones.truncas.diasSueltos} = ${soles(r.vacaciones.truncas.total)}.`,
+    `Valor de un día = ${soles(r.vacaciones.remComputable)} ÷ 30 = ${soles(r.vacaciones.valorDia)}.`,
   ];
-  if (r.vacaciones.noGozadas.aplica) {
+  if (r.vacaciones.diasNoGozados > 0) {
     vLineas.push(
-      `Días pendientes no gozados considerados: ${r.vacaciones.noGozadas.dias} días (sugerencia automática: ${r.vacaciones.noGozadas.diasSugeridos} días, editable en el formulario).`,
-      `Pago por no gozadas = (${soles(r.vacaciones.remComputable)} ÷ 30) × ${r.vacaciones.noGozadas.dias} = ${soles(r.vacaciones.noGozadas.total)}.`
+      `Días que declaraste NO gozados: ${numDias(r.vacaciones.diasNoGozados)}.`,
+      `Pago = ${soles(r.vacaciones.valorDia)} × ${numDias(r.vacaciones.diasNoGozados)} = ${soles(r.vacaciones.total)}.`
     );
+  } else {
+    vLineas.push('Declaraste 0 días sin gozar, así que no hay pago por vacaciones.');
   }
-  secciones.push({ titulo: 'Vacaciones (truncas + no gozadas)', lineas: vLineas });
+  if (r.vacaciones.plazoGoceVencido && r.vacaciones.diasNoGozados > 0) {
+    vLineas.push('Pasaron más de 12 meses desde que cerró tu último año completo sin que'
+      + ' descansaras: además de estos días puede corresponderte una remuneración adicional'
+      + ' (D.S. 012-92-TR, art. 23). Esta calculadora no la incluye; consúltalo.');
+  }
+  if (r.vacaciones.excedeGanados) {
+    vLineas.push(`Atención: declaraste más días de los ${numDias(g.total)} ganados. El cálculo usa el número que indicaste.`);
+  }
+  secciones.push({ titulo: 'Vacaciones no gozadas', lineas: vLineas });
 
   // --- Indemnización ---
   if (inputs.motivoCese === 'despido_arbitrario') {
@@ -190,12 +208,38 @@ function actualizarVisibilidadVacaciones() {
     const fechaIngreso = parseISO(ingresoVal);
     const fechaCese = parseISO(ceseVal);
     const { mesesCompletos } = contarPeriodo(fechaIngreso, fechaCese);
-    fieldsetVacaciones.hidden = mesesCompletos < 12;
-    if (!fieldsetVacaciones.hidden && !diasVacacionesEditadoManualmente) {
-      diasPendientesInput.value = sugerirDiasVacacionesPendientes({ fechaIngreso, fechaCese });
-    }
+    fieldsetVacaciones.hidden = mesesCompletos < 1;
+    if (fieldsetVacaciones.hidden) { ganadosActuales = null; return; }
+
+    ganadosActuales = calcularDiasVacacionesGanados({ fechaIngreso, fechaCese });
+    diasGanadosEl.hidden = false;
+    diasGanadosEl.innerHTML = `Hasta tu fecha de cese has <b>ganado ${numDias(ganadosActuales.total)} días</b>`
+      + ` de vacaciones: ${ganadosActuales.añosCompletos > 0
+          ? `${ganadosActuales.porRecordsCerrados} por los ${ganadosActuales.añosCompletos} año${ganadosActuales.añosCompletos > 1 ? 's' : ''} ya cumplidos`
+            + ` y ${numDias(ganadosActuales.porRecordEnCurso)} por el año en curso`
+          : `${numDias(ganadosActuales.porRecordEnCurso)} por el año en curso`}.`;
+    revisarDiasDeclarados();
   } catch {
     fieldsetVacaciones.hidden = true;
+    ganadosActuales = null;
+  }
+}
+
+/** Los dias se muestran sin decimales cuando son enteros: "90", no "90.00". */
+function numDias(n) {
+  return Number.isInteger(n) ? String(n) : n.toFixed(2).replace(/\.?0+$/, '');
+}
+
+/* Declarar mas dias de los ganados suele ser un error de tecleo, y vale
+   dinero. Se avisa, no se corrige solo: puede haber un acuerdo particular. */
+function revisarDiasDeclarados() {
+  if (!ganadosActuales || !avisoVacacionesEl) return;
+  const dias = Number(diasPendientesInput.value);
+  const excede = Number.isFinite(dias) && dias > ganadosActuales.total + 1e-9;
+  avisoVacacionesEl.hidden = !excede;
+  if (excede) {
+    avisoVacacionesEl.textContent = `Has puesto ${numDias(dias)} días, más de los ${numDias(ganadosActuales.total)}`
+      + ' que has ganado hasta el cese. Revísalo: el cálculo usará el número que escribas.';
   }
 }
 document.getElementById('fechaIngreso').addEventListener('change', actualizarVisibilidadVacaciones);
@@ -278,11 +322,11 @@ function renderResultado(r, inputs) {
   filas.push(['Gratificación trunca (incluye bono extraordinario)', r.gratificacion.aplica ? r.gratificacion.total : 0]);
 
   const vacacionesDetalle = [];
-  if (r.vacaciones.truncas.total > 0) vacacionesDetalle.push(`Truncas del período en curso: ${soles(r.vacaciones.truncas.total)}`);
-  if (r.vacaciones.noGozadas.aplica) {
-    vacacionesDetalle.push(`${r.vacaciones.noGozadas.dias} días pendientes no gozados: ${soles(r.vacaciones.noGozadas.total)}`);
+  if (r.vacaciones.diasNoGozados > 0) {
+    vacacionesDetalle.push(`${numDias(r.vacaciones.diasNoGozados)} días × ${soles(r.vacaciones.valorDia)} por día`);
   }
-  filas.push(['Vacaciones (truncas + no gozadas)', r.vacaciones.total, vacacionesDetalle]);
+  vacacionesDetalle.push(`Días ganados hasta el cese: ${numDias(r.vacaciones.ganados.total)}`);
+  filas.push(['Vacaciones no gozadas', r.vacaciones.total, vacacionesDetalle]);
 
   if (inputs.motivoCese === 'despido_arbitrario') {
     filas.push(['Indemnización por despido arbitrario', r.indemnizacion.aplica ? r.indemnizacion.total : 0]);
@@ -419,7 +463,7 @@ document.getElementById('btn-pdf').addEventListener('click', () => {
   const filasDesglose = [
     ['CTS trunca pendiente de pago', r.cts.aplica ? r.cts.total : 0],
     ['Gratificación trunca (incluye bono extraordinario)', r.gratificacion.aplica ? r.gratificacion.total : 0],
-    ['Vacaciones (truncas + no gozadas)', r.vacaciones.total],
+    ['Vacaciones no gozadas', r.vacaciones.total],
   ];
   if (inputs.motivoCese === 'despido_arbitrario') {
     filasDesglose.push(['Indemnización por despido arbitrario', r.indemnizacion.aplica ? r.indemnizacion.total : 0]);
